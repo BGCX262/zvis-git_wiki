@@ -1,9 +1,56 @@
 #summary User guide for ZVIS
 
 ZVIS is a simple toolkit for multi-track music visualisation.
+The toolkit is targeted at musicians (or, more generally, people having access to a music piece decomposed into separate tracks).
+
+ZVIS is licensed under GNU LPGL 3.0 and may be obtained via git repository.
 
 = Requirements =
 
- * libsndfile
- * scikits.audiolab (Python package)
- * Python Imaging Library
+ * Python 2.6 or 2.7
+ * [http://www.mega-nerd.com/libsndfile/ libsndfile] (shared library)
+ * [http://pypi.python.org/pypi/scikits.audiolab/ scikits.audiolab] (Python package)
+ * [http://www.pythonware.com/products/pil/ Python Imaging Library] (PIL)
+
+If using Linux, libsndfile probably may be found in your package manager. PIL may be installed this way as well or obtained from [http://pypi.python.org/pypi/PIL PyPI]. scikits.audiolab may also be installed via PiPY (before using `easy_install` please install libsndfile).
+
+= Usage =
+To see ZVIS usage, issue the following:
+{{{
+zvis/zvis.py --help
+}}}
+
+You should get concise usage description. If you get an error, probably some of the required dependencies have not been installed properly.
+
+You can run the included example to get started:
+{{{
+mkdir outdir
+zvis/zvis.py example/simple.ini outdir
+}}}
+
+This will generate animation frames in outdir. We recommend ffmpeg to join the frames together, add audio and compress into a video file, e.g.
+{{{
+ffmpeg -f image2 -r 25 -i outdir/frame%06d.jpg -b 1200k -ab 320k  -i example/vidtest.wav exampleout.avi
+}}}
+
+Note the `-r 25` parameter setting the desired framerate. The framerate used for joining frames into video should be exactly the same as specified in the employed INI file — in this case 25 fps.
+
+= Workflow =
+
+To make a visualisation for a piece of music, you will need to perform the following steps:
+ # Select which tracks you want to have visualised and have them rendered into separate WAV files. The files should be of the same length (at least roughly). Sample rates, bit depth and stereo/mono parameters may be different.
+ # Decide which tracks you want rendered using static images and which will be presented using spectrograms.
+ # Prepare a background image (opaque, e.g. filled black rectangle). Note that the image's size (width and height) will set the size of the resulting video.
+ # Prepare all the static images. Their sizes should be exactly the same as that of backround. Images should be saved in a format that supports transparency, preferably PNG or GIF. A good starting point is an image filled with transparent area, you can add shapes / pictures on it.
+ # Write an INI file specifying the frame rate and the order of layers. Note that the order of layers is inferred from their names (e.g. layer02 will follow layer03, whatever the ordering in INI file). For spectrograms specify colour (R,G,B values from the range 0-255), yscale factor (larger values for higher images), rate (the amount of pixels on the horizontal axis shifted per each frame).
+ # You will also need the original track (the mixdown) to be finally added to the resulting video as its audio track.
+
+= Known issues =
+
+The current version is functional but pretty primitive still. The following issues are likely to be fixed in the future:
+ # The spectrograms' frequency axis (y) is linear, while log scale is preferable for music.
+ # Spectrogram's `yscale` is absolute, while it should be relative to image height. The same goes for `range` (x shift per frame).
+ # The rendering process is terribly inefficient: spectrograms are first rendered as ridiculously large images (roughly, range * fps * seconds width * image height), kept in memory and finally composed.
+ # Intermediate rendering steps could be kept on disk with possibility of resuming an interrupted rendering.
+ # Allowing for partial rendering could allow for using parallel rendering, e.g. using GNU parallel.
+ # ZVIS outputs frames and the user is up to using ffmpeg (or so) to join them into a video.
