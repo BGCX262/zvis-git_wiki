@@ -1,0 +1,9 @@
+#summary User guide for ZVIS
+
+ZVIS is a simple toolkit for multi-track music visualisation.
+
+= Requirements =
+
+ * libsndfile
+ * scikits.audiolab (Python package)
+ * Python Imaging Library
