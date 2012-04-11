@@ -50,7 +50,7 @@ To make a visualisation for a piece of music, you will need to perform the follo
 The current version is functional but pretty primitive still. The following issues are likely to be fixed in the future:
  # The spectrograms' frequency axis (y) is linear, while log scale is preferable for music.
  # Spectrogram's `yscale` is absolute, while it should be relative to image height. The same goes for `range` (x shift per frame).
- # The rendering process is terribly inefficient: spectrograms are first rendered as ridiculously large images (roughly, range * fps * seconds width * image height), kept in memory and finally composed.
+ # The rendering process is terribly inefficient: spectrograms are first rendered as ridiculously large images (roughly, range x fps x seconds width x image height), kept in memory and finally composed.
  # Intermediate rendering steps could be kept on disk with possibility of resuming an interrupted rendering.
  # Allowing for partial rendering could allow for using parallel rendering, e.g. using GNU parallel.
  # ZVIS outputs frames and the user is up to using ffmpeg (or so) to join them into a video.
