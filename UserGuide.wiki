@@ -12,7 +12,7 @@ ZVIS is licensed under GNU LPGL 3.0 and may be obtained via git repository.
  * [http://pypi.python.org/pypi/scikits.audiolab/ scikits.audiolab] (Python package)
  * [http://www.pythonware.com/products/pil/ Python Imaging Library] (PIL)
 
-If using Linux, libsndfile probably may be found in your package manager. PIL may be installed this way as well or obtained from [http://pypi.python.org/pypi/PIL PyPI]. scikits.audiolab may also be installed via PiPY (before using `easy_install` please install libsndfile).
+If using Linux, libsndfile probably may be found in your package manager. PIL may be installed this way as well or obtained from [http://pypi.python.org/pypi/PIL PyPI]. scikits.audiolab may also be installed via PyPI (before using `easy_install` please install libsndfile).
 
 = Usage =
 To see ZVIS usage, issue the following:
